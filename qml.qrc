@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>MainMenu.qml</file>
+        <file>SelectTest.qml</file>
+        <file>ViewResults.qml</file>
+        <file>Settings.qml</file>
+        <file>TableView.qml</file>
+        <file>TableView2.qml</file>
+    </qresource>
+</RCC>
