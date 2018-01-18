@@ -2,16 +2,16 @@ import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
-Item {
-    id: table
-    anchors.fill: parent
-
+Item {    
+    anchors.fill: parent    
     property var tableHeaders: []
     property var tableData: []
     property var tableDataRevert: []
+    property int selectedRowIndex: -1
+    property string id
     signal saveChanges
 
-    Component.onCompleted: {
+    Component.onCompleted: {        
         tableDataRevert = JSON.parse(JSON.stringify(tableData))
     }
 
@@ -19,7 +19,6 @@ Item {
         id: columnLayout
         spacing: 5
         anchors.fill: parent
-
         Rectangle {
             id: headers
             Layout.fillWidth: true
@@ -61,9 +60,16 @@ Item {
                                 Rectangle {
                                     width: columnLayout.width / tableHeaders.length
                                     height: 40
+                                    color: selectedRowIndex === tIndex ? "grey" : "white"
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            selectedRowIndex = tIndex
+                                        }
+                                    }
                                     Rectangle {
                                         anchors.fill: parent
-                                        anchors.margins: 1
+                                        anchors.margins: 4
                                         TextField {
                                             anchors.fill: parent
                                             visible: tableHeaders[index].type === "string"
@@ -76,6 +82,11 @@ Item {
                                                         || tableHeaders[index].type === "int"
                                                         || tableHeaders[index].type === "double"){
                                                     tableData[tIndex][tableHeaders[index].field] =  text
+                                                }
+                                            }
+                                            onFocusChanged: {
+                                                if (focus) {
+                                                    selectedRowIndex = tIndex
                                                 }
                                             }
                                         }
@@ -92,6 +103,11 @@ Item {
                                                         tableData[tIndex][tableHeaders[index].field] =  0
                                                 }
                                             }
+                                            onFocusChanged: {
+                                                if (focus) {
+                                                    selectedRowIndex = tIndex
+                                                }
+                                            }
                                         }
                                         ComboBox {
                                             anchors.fill: parent
@@ -105,7 +121,11 @@ Item {
                                                 }
                                             }
                                         }
-
+                                        onFocusChanged: {
+                                            if (focus) {
+                                                selectedRowIndex = tIndex
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -120,6 +140,32 @@ Item {
             id: rowLayout
             width: 100
             height: 100
+
+
+            Button {
+                id: addRowBtn
+                text: qsTr("Add Row")
+                onClicked:  {
+                    var row = {}
+                    tableHeaders.map(function (header){
+                        if(header.type === "string"){
+
+                        } else if
+                    })
+                }
+            }
+
+            Button {
+                id: removeRowBtn
+                text: qsTr("Remove Row")
+                onClicked:  {
+                    if(selectedRowIndex > -1) {
+                        tableData.splice(selectedRowIndex, 1)
+                        tableData = JSON.parse(JSON.stringify(tableData))
+                        selectedRowIndex = -1
+                    }
+                }
+            }
 
             Button {
                 id: saveChangesBtn

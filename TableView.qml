@@ -4,8 +4,6 @@ import QtQuick.Layouts 1.3
 
 Item {
     id: table
-    width: 800
-    height: 600
     anchors.fill: parent
 
     property var tableHeaders: []
@@ -21,6 +19,7 @@ Item {
         id: columnLayout
         spacing: 5
         anchors.fill: parent
+
         Rectangle {
             id: headers
             Layout.fillWidth: true
@@ -31,8 +30,7 @@ Item {
                     Rectangle {
                         width: columnLayout.width / tableHeaders.length
                         height: 40
-                        border.color: "black"
-                        border.width: 1
+                        color: "silver"
                         Text {
                             anchors.centerIn: parent
                             text: tableHeaders[index].label
@@ -43,77 +41,76 @@ Item {
         }
 
         Rectangle {
-            id: tableDataRectangle
-            Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.fillWidth: true
             Flickable {
                 anchors.fill: parent
-                contentHeight: (headers.height+6) * tableData.length
+                contentHeight:  tableLayout.height
                 clip: true
-                anchors.margins: 0
-                Pane {
-                    width: tableDataRectangle.width
-                    anchors.margins: 0
-                    //Column {
+                ColumnLayout {
+                    id: tableLayout
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    spacing: 1
                     Repeater {
-                        anchors.fill: parent
-                        anchors.margins: 0
                         model: tableData
                         Row {
-                            id: dataRows
-                            property int dataIndex: index
+                            property int tIndex: index
                             Repeater {
                                 model: tableHeaders
                                 Rectangle {
-                                    y: dataIndex === 0 ? parent.y : ((headers.height+5) * dataIndex)
                                     width: columnLayout.width / tableHeaders.length
-                                    height: headers.height
-                                    TextField {
-                                        visible: tableHeaders[index].type === "string"
-                                                 || tableHeaders[index].type === "int"
-                                                 || tableHeaders[index].type === "double"
-                                                 ? true : false
-                                        anchors.centerIn: parent
-                                        text: tableData[dataIndex][tableHeaders[index].field]
-                                        width: columnLayout.width / tableHeaders.length
-                                        onTextEdited: {
-                                            if(tableHeaders[index].type === "string"
-                                                    || tableHeaders[index].type === "int"
-                                                    || tableHeaders[index].type === "double"){
-                                                tableData[dataIndex][tableHeaders[index].field] =  text
+                                    height: 40
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        TextField {
+                                            anchors.fill: parent
+                                            visible: tableHeaders[index].type === "string"
+                                                     || tableHeaders[index].type === "int"
+                                                     || tableHeaders[index].type === "double"
+                                                     ? true : false
+                                            text: tableData[tIndex][tableHeaders[index].field]
+                                            onTextEdited: {
+                                                if(tableHeaders[index].type === "string"
+                                                        || tableHeaders[index].type === "int"
+                                                        || tableHeaders[index].type === "double"){
+                                                    tableData[tIndex][tableHeaders[index].field] =  text
+                                                }
                                             }
                                         }
-                                    }
-                                    CheckBox {
-                                        visible: tableHeaders[index].type === "bool" ? true : false
-                                        checked: tableData[dataIndex][tableHeaders[index].field] === 0 ? false : true
-                                        anchors.centerIn: parent
-                                        onCheckedChanged: {
-                                            if(tableHeaders[index].type === "bool"){
-                                                if(checked)
-                                                    tableData[dataIndex][tableHeaders[index].field] =  1
-                                                else
-                                                    tableData[dataIndex][tableHeaders[index].field] =  0
+                                        CheckBox {
+                                            anchors.fill: parent
+                                            visible: tableHeaders[index].type === "bool" ? true : false
+                                            checked: tableData[tIndex][tableHeaders[index].field] === 0 ? false : true
+                                            anchors.centerIn: parent
+                                            onCheckedChanged: {
+                                                if(tableHeaders[index].type === "bool"){
+                                                    if(checked)
+                                                        tableData[tIndex][tableHeaders[index].field] =  1
+                                                    else
+                                                        tableData[tIndex][tableHeaders[index].field] =  0
+                                                }
                                             }
                                         }
-                                    }
-                                    ComboBox {
-                                        visible: tableHeaders[index].type === "select" ? true : false
-                                        model: tableHeaders[index].options
-                                        anchors.centerIn: parent
-                                        currentIndex: tableHeaders[index].type === "select" ? tableHeaders[index].options.indexOf(tableData[dataIndex][tableHeaders[index].field]) : 0
-                                        width: columnLayout.width / tableHeaders.length
-                                        onCurrentIndexChanged: {
-                                            if(tableHeaders[index].type === "select"){
-                                                tableData[dataIndex][tableHeaders[index].field] = tableHeaders[index].options[currentIndex]
+                                        ComboBox {
+                                            anchors.fill: parent
+                                            visible: tableHeaders[index].type === "select" ? true : false
+                                            model: tableHeaders[index].options
+                                            currentIndex: tableHeaders[index].type === "select" ? tableHeaders[index].options.indexOf(tableData[tIndex][tableHeaders[index].field]) : 0
+                                            width: columnLayout.width / tableHeaders.length
+                                            onCurrentIndexChanged: {
+                                                if(tableHeaders[index].type === "select"){
+                                                    tableData[tIndex][tableHeaders[index].field] = tableHeaders[index].options[currentIndex]
+                                                }
                                             }
                                         }
+
                                     }
                                 }
                             }
                         }
                     }
-                    //}
                 }
                 ScrollBar.vertical: ScrollBar { }
             }

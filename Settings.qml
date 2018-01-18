@@ -111,7 +111,7 @@ Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
                         TableView2 {
-                            id: testTable
+                            id: tests
                             height: parent.height/2
                             Layout.fillWidth: true
                             tableHeaders: [
@@ -130,60 +130,24 @@ Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
                         TableView2 {
+                            id: testLimits
                             height: parent.height/2
-                            Layout.fillWidth: true
-                            anchors.top: testTable.bottom
+                            Layout.fillWidth: true                            
                             tableHeaders: [
                                 {label: "Id", field: "id", type: "int"},
+                                {label: "Test Id", field: "test", type: "int"},
                                 {label: "Limit Type", field: "limit_type",type: "select", options: ["Time in Seconds", "Time in Hours", "Percentage of Force"] },
                                 {label: "Rate", field: "rate", type: "double"}
                             ]
                             tableData: [
-                                { id: 0, limit_type: "Time in Seconds", rate: 0.21 },
-                                { id: 1, limit_type: "Time in Seconds", rate: 0.8 },
-                                { id: 2, limit_type: "Percentage of Force", rate: 0.1 },
+                                { id: 0, test: 0, limit_type: "Time in Seconds", rate: 0.21 },
+                                { id: 1, test: 1,limit_type: "Time in Seconds", rate: 0.8 },
+                                { id: 2, test: 1,limit_type: "Percentage of Force", rate: 0.1 },
                             ]
                         }
                     }
 
                 }
-
-
-                /*ColumnLayout {
-                    anchors.fill: parent
-
-                    TableView2 {
-                        id: testTable
-                        height: parent.height/2
-                        Layout.fillWidth: true
-                        tableHeaders: [
-                            {label: "Id", field: "id", type: "id"},
-                            {label: "Test Name", field: "test_name",type: "string" },
-                            {label: "Rate", field: "rate", type: "double"}
-                        ]
-                        tableData: [
-                            {id: 0, test_name: "Test 1", rate: 0.9},
-                            {id: 1, test_name: "Test 2", rate: 0.1},
-                            {id: 2, test_name: "Test 3", rate: 0.3},
-                        ]
-                    }
-
-                    TableView2 {
-                        height: parent.height/2
-                        Layout.fillWidth: true
-                        anchors.top: testTable.bottom
-                        tableHeaders: [
-                            {label: "Id", field: "id", type: "int"},
-                            {label: "Limit Type", field: "limit_type",type: "select", options: ["Time in Seconds", "Time in Hours", "Percentage of Force"] },
-                            {label: "Rate", field: "rate", type: "double"}
-                        ]
-                        tableData: [
-                            { id: 0, limit_type: "Time in Seconds", rate: 0.21 },
-                            { id: 1, limit_type: "Time in Seconds", rate: 0.8 },
-                            { id: 2, limit_type: "Percentage of Force", rate: 0.1 },
-                        ]
-                    }
-                }*/
             }
         }
     }
