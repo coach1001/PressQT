@@ -147,17 +147,13 @@ Item {
                 text: qsTr("Add Row")
                 onClicked:  {
                     var row = {}
-                    tableHeaders.map(function (header){
-                        if(header.type === "string"){
-
-                        } else if
-                    })
                 }
             }
 
             Button {
                 id: removeRowBtn
                 text: qsTr("Remove Row")
+                enabled: selectedRowIndex > -1 ? true : false
                 onClicked:  {
                     if(selectedRowIndex > -1) {
                         tableData.splice(selectedRowIndex, 1)

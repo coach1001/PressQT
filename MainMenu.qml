@@ -4,8 +4,11 @@ import QtQuick.Layouts 1.3
 
 Item {
     id: mainMenu
+    TableViewNested {
+        anchors.fill: parent
+    }
 
-    ColumnLayout {
+    /*ColumnLayout {
         id: mainMenuLayout
         spacing: 5
         anchors.bottomMargin: 50
@@ -43,6 +46,6 @@ Item {
                 mainStack.push(Qt.createComponent("Settings.qml"))
             }
         }
-    }
+    }*/
 
 }

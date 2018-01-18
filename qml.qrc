@@ -8,5 +8,6 @@
         <file>Settings.qml</file>
         <file>TableView.qml</file>
         <file>TableView2.qml</file>
+        <file>TableViewNested.qml</file>
     </qresource>
 </RCC>
