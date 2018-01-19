@@ -24,11 +24,6 @@ Item {
             {label: "Id", field: "id"},
             {label: "Species", field: "species",referenced: true, reference: "id", referenceDisplay: "species"},
             {label: "Breed", field: "breed"}
-        ],
-        [
-            {label: "Id", field: "id"},
-            {label: "Breed", field: "breed",referenced: true, reference: "id", referenceDisplay: "breed"},
-            {label: "Name", field: "name"}
         ]
     ]
     property var tableData: [
@@ -44,13 +39,6 @@ Item {
             {id: 3, species: 0, breed: "Poodle"},
             {id: 4, species: 1, breed: "Cobra"},
             {id: 5, species: 0, breed: "Labrador"}
-        ],
-        [
-            {id: 0, breed: 0, name: "Sasha"},
-            {id: 1, breed: 0, name: "Killer"},
-            {id: 2, breed: 3, name: "Frenchy"},
-            {id: 3, breed: 1, name: "Whiskers"},
-            {id: 4, breed: 2, name: "Sasha"}
         ]
     ]
 
@@ -58,9 +46,7 @@ Item {
         id: topLayout
         anchors.margins: 5
         spacing: 5
-        anchors.left: parent.left
-        anchors.right: parent.right
-
+        anchors.fill: parent
         Repeater {
             model: tableHeaders
             ColumnLayout {
@@ -89,7 +75,7 @@ Item {
                     }
                 }
 
-                Repeater {
+                /*Repeater {
                     model: tableData[index0]
                     RowLayout {
                         Layout.fillWidth: true
@@ -123,24 +109,10 @@ Item {
                                     height: 35
                                     enabled: !tableHeaders[index0][index].referenced
                                     anchors.centerIn: parent
-                                    text: {
-                                        if(tableHeaders[index0][index].referenced)
-                                        {
-                                            try {
-                                                return tableData[index0 - 1][selectedIndexes[index0 - 1]][tableHeaders[index0][index].referenceDisplay]
-                                            } catch (ex) {
-                                            }
-                                        }
-                                        return tableData[index0][dIndex0][tableHeaders[index0][index].field]
-                                    }
+                                    text: tableData[index0][dIndex0][tableHeaders[index0][index].field]
                                     onFocusChanged: {
                                         if(focus){
                                             selectedIndexes[index0] = dIndex0
-                                            for(var i = index0; i < selectedIndexes.length; i++ ) {
-                                                if(i !== index0) {
-                                                   selectedIndexes[i] = -1
-                                                }
-                                            }
                                             tableData = JSON.parse(JSON.stringify(tableData))
                                         }
                                     }
@@ -148,7 +120,8 @@ Item {
                             }
                         }
                     }
-                }
+                }*/
+
             }
         }
     }

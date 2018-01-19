@@ -9,5 +9,6 @@
         <file>TableView.qml</file>
         <file>TableView2.qml</file>
         <file>TableViewNested.qml</file>
+        <file>TestForm.qml</file>
     </qresource>
 </RCC>
