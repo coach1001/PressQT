@@ -17,18 +17,18 @@ Item {
 
     property var tableHeaders: [
         [
-            {label: "Id", field: "id"},
-            {label: "Species", field: "species"}
+            {label: "Id", field: "id", type: "int"},
+            {label: "Species", field: "species", type: "string"}
         ],
         [
-            {label: "Id", field: "id"},
+            {label: "Id", field: "id", type: "int"},
             {label: "Species", field: "species",referenced: true, reference: "id", referenceDisplay: "species"},
-            {label: "Breed", field: "breed"}
+            {label: "Breed", field: "breed", type: "string"}
         ],
         [
-            {label: "Id", field: "id"},
+            {label: "Id", field: "id", type: "int"},
             {label: "Breed", field: "breed",referenced: true, reference: "id", referenceDisplay: "breed"},
-            {label: "Name", field: "name"}
+            {label: "Name", field: "name", type: "string"}
         ]
     ]
     property var tableData: [
@@ -47,6 +47,24 @@ Item {
         ],
         [
             {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
+            {id: 0, breed: 0, name: "Sasha"},
             {id: 1, breed: 0, name: "Killer"},
             {id: 2, breed: 3, name: "Frenchy"},
             {id: 3, breed: 1, name: "Whiskers"},
@@ -64,7 +82,16 @@ Item {
             spacing: 5
             anchors.left: parent.left
             anchors.right: parent.right
-
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Button {
+                    text: "Save Changes"
+                }
+                Button {
+                    text: "Revert Changes"
+                }
+            }
             Repeater {
                 model: tableHeaders
                 ColumnLayout {
@@ -146,11 +173,37 @@ Item {
                                                     }
                                                 }
                                                 tableData = JSON.parse(JSON.stringify(tableData))
+                                                selectedIndexes = JSON.parse(JSON.stringify(selectedIndexes))
                                             }
                                         }
                                     }
                                 }
                             }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        visible: index0 === 0 || selectedIndexes[index0 - 1] > -1 ? true : false
+                        Button {
+                            text: "Add"
+                            onClicked: {
+                                var row = {}
+                                tableHeaders[index0].map(function(header){
+                                    if(header.type === "string"){
+                                        row[header.field] = ''
+                                    }else if(header.type === "int"){
+                                        row[header.field] = -1
+                                    }else if(header.referenced){
+                                        row[header.field] = tableData[index0][selectedIndexes[index0 - 1]][header.reference]
+                                    }
+                                })
+                                tableData[index0].push(row)
+                                tableData = JSON.parse(JSON.stringify(tableData))
+                            }
+                        }
+                        Button {
+                            text: "Remove"
                         }
                     }
                 }
