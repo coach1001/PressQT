@@ -54,94 +54,99 @@ Item {
         ]
     ]
 
-    ColumnLayout {
-        id: topLayout
-        anchors.margins: 5
-        spacing: 5
-        anchors.left: parent.left
-        anchors.right: parent.right
+    Flickable {
+        clip: true
+        contentHeight: topLayout.height
+        anchors.fill: parent
+        ColumnLayout {
+            id: topLayout
+            anchors.margins: 5
+            spacing: 5
+            anchors.left: parent.left
+            anchors.right: parent.right
 
-        Repeater {
-            model: tableHeaders
-            ColumnLayout {
-                property var index0: index
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-
-                RowLayout {
+            Repeater {
+                model: tableHeaders
+                ColumnLayout {
+                    property var index0: index
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 40
-                    spacing: 5
-                    Repeater {
-                        model: tableHeaders[index0]
-                        Rectangle {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 40
-                            color: "silver"
-                            border.color: "grey"
-                            border.width: 1
-                            Text {
-                                anchors.centerIn: parent
-                                text: tableHeaders[index0][index].label
-                            }
-                        }
-                    }
-                }
+                    Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
-                Repeater {
-                    model: tableData[index0]
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 40
                         spacing: 5
-                        visible : {
-                            if (index0 > 0) {
-                                var parentfilterFieldIndex = findWithAttr(tableHeaders[index0], "referenced", true)
-                                var filterField = tableHeaders[index0][parentfilterFieldIndex].field
-                                var parentfilterField = tableHeaders[index0][parentfilterFieldIndex].reference
-                                try {
-                                    if (tableData[index0 - 1][selectedIndexes[index0 - 1]][parentfilterField] === tableData[index0][index][filterField]){
-                                        return true
-                                    }
-                                } catch (ex) {
-                                    return false
-                                }
-                                return false
-                            } else {
-                                return true
-                            }
-                        }
-                        property var dIndex0: index
                         Repeater {
                             model: tableHeaders[index0]
                             Rectangle {
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 40
-                                TextField {
-                                    width: parent.width - 5
-                                    height: 35
-                                    enabled: !tableHeaders[index0][index].referenced
+                                color: "silver"
+                                border.color: "grey"
+                                border.width: 1
+                                Text {
                                     anchors.centerIn: parent
-                                    text: {
-                                        if(tableHeaders[index0][index].referenced)
-                                        {
-                                            try {
-                                                return tableData[index0 - 1][selectedIndexes[index0 - 1]][tableHeaders[index0][index].referenceDisplay]
-                                            } catch (ex) {
-                                            }
+                                    text: tableHeaders[index0][index].label
+                                }
+                            }
+                        }
+                    }
+
+                    Repeater {
+                        model: tableData[index0]
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 40
+                            spacing: 5
+                            visible : {
+                                if (index0 > 0) {
+                                    var parentfilterFieldIndex = findWithAttr(tableHeaders[index0], "referenced", true)
+                                    var filterField = tableHeaders[index0][parentfilterFieldIndex].field
+                                    var parentfilterField = tableHeaders[index0][parentfilterFieldIndex].reference
+                                    try {
+                                        if (tableData[index0 - 1][selectedIndexes[index0 - 1]][parentfilterField] === tableData[index0][index][filterField]){
+                                            return true
                                         }
-                                        return tableData[index0][dIndex0][tableHeaders[index0][index].field]
+                                    } catch (ex) {
+                                        return false
                                     }
-                                    onFocusChanged: {
-                                        if(focus){
-                                            selectedIndexes[index0] = dIndex0
-                                            for(var i = index0; i < selectedIndexes.length; i++ ) {
-                                                if(i !== index0) {
-                                                   selectedIndexes[i] = -1
+                                    return false
+                                } else {
+                                    return true
+                                }
+                            }
+                            property var dIndex0: index
+                            Repeater {
+                                model: tableHeaders[index0]
+                                Rectangle {
+                                    Layout.fillWidth: true
+                                    Layout.preferredHeight: 40
+                                    TextField {
+                                        width: parent.width - 5
+                                        height: 35
+                                        enabled: !tableHeaders[index0][index].referenced
+                                        anchors.centerIn: parent
+                                        text: {
+                                            if(tableHeaders[index0][index].referenced)
+                                            {
+                                                try {
+                                                    return tableData[index0 - 1][selectedIndexes[index0 - 1]][tableHeaders[index0][index].referenceDisplay]
+                                                } catch (ex) {
                                                 }
                                             }
-                                            tableData = JSON.parse(JSON.stringify(tableData))
+                                            return tableData[index0][dIndex0][tableHeaders[index0][index].field]
+                                        }
+                                        onFocusChanged: {
+                                            if(focus){
+                                                selectedIndexes[index0] = dIndex0
+                                                for(var i = index0; i < selectedIndexes.length; i++ ) {
+                                                    if(i !== index0) {
+                                                       selectedIndexes[i] = -1
+                                                    }
+                                                }
+                                                tableData = JSON.parse(JSON.stringify(tableData))
+                                            }
                                         }
                                     }
                                 }
@@ -151,5 +156,6 @@ Item {
                 }
             }
         }
+        ScrollBar.vertical: ScrollBar { }
     }
 }
